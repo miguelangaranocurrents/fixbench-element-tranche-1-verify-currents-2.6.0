@@ -86,9 +86,10 @@ export default defineConfig<{}, WorkerOptions>({
     use: {
         viewport: { width: 1280, height: 720 },
         ignoreHTTPSErrors: true,
-        video: "retain-on-failure",
+        video: "on",
         baseURL,
-        trace: "retain-on-failure",
+        trace: "on",
+        screenshot: "on",
     },
     webServer: {
         command: process.env.CI ? "pnpm exec serve -p 8080 -L ./webapp" : "nx --outputStyle stream start",
