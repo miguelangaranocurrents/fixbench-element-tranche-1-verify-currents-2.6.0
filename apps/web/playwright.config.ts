@@ -13,8 +13,10 @@ import {
     type PlaywrightTestOptions,
     type PlaywrightWorkerOptions,
 } from "@playwright/test";
+import { currentsReporter } from "@currents/playwright";
 
 import { type WorkerOptions } from "./playwright/services";
+import currentsConfig from "./currents.config";
 
 const baseURL = process.env["BASE_URL"] ?? "http://localhost:8080";
 
@@ -109,6 +111,7 @@ export default defineConfig<{}, WorkerOptions>({
               ["github"],
               ["html", { outputFolder: "playwright/html-report", open: "never" }],
               ["json", { outputFile: "test-results.json" }],
+              ...(process.env.CURRENTS_RECORD_KEY ? [currentsReporter(currentsConfig)] : []),
           ]
         : [["html", { outputFolder: "playwright/html-report" }]],
     snapshotDir: "playwright/snapshots",

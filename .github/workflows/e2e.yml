@@ -39,6 +39,9 @@ jobs:
 
             - name: Run e2e tests
               working-directory: apps/web
+              env:
+                  CURRENTS_RECORD_KEY: ${{ secrets.CURRENTS_RECORD_KEY }}
+                  CURRENTS_PROJECT_ID: ${{ secrets.CURRENTS_PROJECT_ID }}
               run: >-
                   pnpm test:playwright --project=Chrome
                   playwright/e2e/editing/
@@ -65,4 +68,12 @@ jobs:
               with:
                   name: test-results
                   path: apps/web/test-results.json
+                  retention-days: 30
+
+            - name: Upload Currents report
+              if: ${{ !cancelled() }}
+              uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
+              with:
+                  name: currents
+                  path: apps/web/currents-report.json
                   retention-days: 30
